@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة تانية تمريض - 2026</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+ 
+ <style>
+    :root {
+        --burgundy: #800020;
+        --maroon: #4D0011;
+        --gold: #D4AF37;
+        --dark-gold: #B8860B;
+        --bg-color: #f4f1e6;
+        --white: #ffffff;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--bg-color);
+        margin: 0; padding: 0;
+        color: var(--maroon);
+    }
+
+    header {
+        background: linear-gradient(135deg, var(--maroon), var(--burgundy));
+        color: white;
+        padding: 50px 20px 80px;
+        text-align: center;
+        clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        border-bottom: 5px solid var(--gold);
+        position: relative;
+    }
+
+    .whatsapp-btn {
+        position: relative;
+        display: inline-block;
+        padding: 10px 30px;
+        margin-top: 20px;
+        background: linear-gradient(145deg, var(--gold), var(--dark-gold));
+        color: var(--maroon) !important;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 50px;
+        overflow: hidden;
+        z-index: 1;
+        font-size: 1rem;
+        box-shadow: 0 6px 0 #8b6508, 0 8px 15px rgba(0,0,0,0.4);
+        transition: all 0.2s ease;
+        border: none;
+    }
+
+    .whatsapp-btn::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: conic-gradient(transparent, transparent, rgba(255,255,255,0.9), transparent);
+        animation: rotate-border 2s linear infinite;
+        z-index: -2;
+    }
+
+    .whatsapp-btn::after {
+        content: '';
+        position: absolute;
+        inset: 3px;
+        background: linear-gradient(145deg, var(--gold), var(--dark-gold));
+        border-radius: 47px;
+        z-index: -1;
+    }
+
+    @keyframes rotate-border {
+        100% { transform: rotate(360deg); }
+    }
+
+    .whatsapp-btn:active {
+        transform: translateY(4px);
+        box-shadow: 0 2px 0 #8b6508, 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: -40px auto 50px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .card {
+        background: var(--white);
+        border-radius: 20px;
+        padding: 20px 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: 0.3s;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        border: 1px solid rgba(128, 0, 32, 0.05);
+    }
+    .card:hover { transform: translateY(-5px); border-color: var(--gold); }
+    .card i { font-size: 2.5rem; color: var(--burgundy); margin-bottom: 10px; }
+    .card h3 { font-size: 1.1rem; margin: 5px 0; }
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: var(--bg-color);
+        z-index: 9999;
+        flex-direction: column;
+    }
+    .modal-header { background: var(--maroon); color: white; padding: 20px; display: flex; align-items: center; justify-content: space-between; }
+    .back-btn { font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+    .tabs-nav { display: flex; background: var(--white); border-bottom: 2px solid var(--gold); }
+    .tab-btn { flex: 1; padding: 15px; border: none; background: none; font-weight: bold; cursor: pointer; color: var(--maroon); }
+    .tab-btn.active { background: var(--gold); color: white; }
+    .tab-body { padding: 20px; overflow-y: auto; flex-grow: 1; }
+    .lecture-item { background: var(--white); margin-bottom: 10px; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .btn-link { background: var(--burgundy); color: white; padding: 8px 15px; text-decoration: none; border-radius: 8px; font-size: 0.85rem; }
+    .footer { text-align: center; padding: 20px; background: var(--maroon); color: white; }
+    .pray-fab, .hadith-fab { position: fixed; bottom: 25px; padding: 0 15px; height: 45px; background: var(--burgundy); color: var(--gold); border-radius: 30px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer; z-index: 10000; border: 2px solid var(--gold); font-size: 0.9rem; font-weight: bold; }
+    .pray-fab { left: 25px; } .hadith-fab { right: 25px; }
+    .pray-bubble, .hadith-bubble { position: fixed; bottom: 80px; background: white; padding: 12px 18px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); max-width: 250px; display: none; z-index: 10000; color: var(--maroon); font-weight: bold; }
+    .pray-bubble { left: 25px; border-left: 5px solid var(--gold); }
+    .hadith-bubble { right: 25px; border-right: 5px solid var(--gold); }
+</style>
+
+</head>
+<body>
+
+<header>
+    <h1> مواد تانيه تمريض 2026 semester 4 </h1>
+    <p>إعداد الـ❀مـنــــــــــار مـحـمـــــــد❀</p>
+    
+    <a href="https://chat.whatsapp.com/KJd81GD8LBSGSqAU3KaOwX" target="_blank" class="whatsapp-btn">
+        <i class="fab fa-whatsapp"></i> جروب الواتساب
+    </a>
+</header>
+
+<div class="container">
+    <div class="card" onclick="openModal('Adult 2 نظري')">
+        <i class="fas fa-heartbeat"></i>
+        <h3>Adult 2 نظري</h3>
+        <small style="color: #666; display: block;">بالغين نظري</small>
+    </div>
+
+    <div class="card" onclick="openModal('Clinical Adult 2')">
+        <i class="fas fa-stethoscope"></i>
+        <h3>Clinical Adult 2</h3>
+        <small style="color: #666; display: block;">بالغين عملي</small>
+    </div>
+
+    <div class="card" onclick="openModal('Strategies')">
+        <i class="fas fa-lightbulb"></i>
+        <h3>Strategies</h3>
+        <small style="color: #666; display: block;">استراتيجيات</small>
+    </div>
+
+    <div class="card" onclick="openModal('Research')">
+        <i class="fas fa-microscope"></i>
+        <h3>Research in nursing</h3>
+        <small style="color: #666; display: block;">البحث في التمريض</small>
+    </div>
+
+    <div class="card" onclick="openModal('Informatics')">
+        <i class="fas fa-microchip"></i>
+        <h3 style="font-size: 0.9rem;">Informatics & Tech</h3>
+        <small style="color: #666; display: block;">تمريض معلوماتي</small>
+    </div>
+
+    <div class="card" onclick="openModal('Critical Care')">
+        <i class="fas fa-pills"></i>
+        <h3>Critical Care</h3>
+        <small style="color: #666; display: block;">طوارئ وحالات حرجة</small>
+    </div>
+
+    <div class="card" onclick="openModal('Surgical')">
+        <i class="fas fa-user-md"></i>
+        <h3>Surgical diseases</h3>
+        <small style="color: #666; display: block;">أمراض جراحة</small>
+    </div>
+</div>
+
+<div id="materialModal" class="modal">
+    <div class="modal-header">
+        <span class="back-btn" onclick="closeModal()"><i class="fas fa-arrow-right"></i> رجوع</span>
+        <h2 id="modalTitle" style="margin:0; font-size: 1.2rem;"></h2>
+        <span></span>
+    </div>
+
+    <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchTab(event, 'book-tab')">الكتب</button>
+        <button class="tab-btn" onclick="switchTab(event, 'quiz-tab')">الأسئلة</button>
+        <button class="tab-btn" onclick="switchTab(event, 'summary-tab')">التلخيص</button>
+    </div>
+
+    <div class="tab-body" id="modalBody"></div>
+</div>
+
+<div class="footer">تم التصميم بكل حب بواسطة <span>منار محمد</span></div>
+
+<script>
+    // الدالة الذكية لإنشاء التبويبات مع دعم لينكات منفصلة لكل محاضرة
+    function renderSmartTabs(container, lectures, resources = {}) {
+        let quizzesHtml = lectures.map((lec, index) => {
+            const hasLink = lec.link && lec.link.startsWith("http");
+            return `
+            <div class="lecture-item">
+                <div style="display: flex; flex-direction: column; text-align: right;">
+                    <span style="font-weight: bold; color: #333;">${index + 1}. ${lec.en}</span>
+                    <small style="color: #666;">${lec.ar}</small>
+                </div>
+                <a href="${hasLink ? lec.link : '#'}" target="${hasLink ? '_blank' : '_self'}" 
+                   class="btn-link" style="background-color: ${hasLink ? '#0088cc' : '#800020'};">
+                   ${hasLink ? 'ابدأ الكويز ✈️' : 'قريباً'}
+                </a>
+            </div>`;
+        }).join('');
+
+        let summariesHtml = lectures.map((lec, index) => {
+            const hasSLink = lec.sLink && lec.sLink.startsWith("http");
+            return `
+            <div class="lecture-item">
+                <div style="display: flex; flex-direction: column; text-align: right;">
+                    <span style="font-weight: bold; color: #333;">تلخيص: ${lec.en}</span>
+                    <small style="color: #666;">${hasSLink ? 'جاهز للمراجعة ✅' : 'قريباً إن شاء الله'}</small>
+                </div>
+                <a href="${hasSLink ? lec.sLink : '#'}" target="${hasSLink ? '_blank' : '_self'}" 
+                   class="btn-link" style="background-color: ${hasSLink ? '#D4AF37' : '#4D0011'}; color: ${hasSLink ? '#4D0011' : 'white'};">
+                   ${hasSLink ? 'فتح التلخيص 📝' : 'قريباً'}
+                </a>
+            </div>`;
+        }).join('');
+
+        container.innerHTML = `
+            <div id="book-tab" class="tab-pane" style="display: block; padding: 10px;">
+                <div class="lecture-item"><span>كتاب المادة (Drive) 📥</span> <a href="${resources.bookDrive || '#'}" target="_blank" class="btn-link">تحميل</a></div>
+                <div class="lecture-item"><span>المصدر (Telegram) ✈️</span> <a href="${resources.bookTelegram || '#'}" target="_blank" class="btn-link">فتح</a></div>
+            </div>
+            <div id="quiz-tab" class="tab-pane" style="display: none;">${quizzesHtml}</div>
+            <div id="summary-tab" class="tab-pane" style="display: none; padding: 10px;">
+                <div class="lecture-item" style="background: var(--maroon); color: white;">
+                    <span>🌟 الملخص الشامل للمادة</span> 
+                    <a href="${resources.summary || '#'}" target="_blank" class="btn-link" style="background: var(--gold); color: var(--maroon);">فتح</a>
+                </div>
+                <hr style="border: 1px solid var(--gold); margin: 15px 0;">
+                ${summariesHtml}
+            </div>
+        `;
+        
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        tabButtons[0].classList.add('active'); // افتح تبويب الكتب أولاً
+    }
+
+    function renderAdultContent() {
+        const modalBody = document.getElementById('modalBody');
+        const data = [
+            { en: "Stroke", ar: "السكتة الدماغية", link: "#", sLink: "#" },
+            { en: "Neurological dysfunction", ar: "خلل عصبي", link: "#", sLink: "#" },
+            { en: "Oncology (Cancer)", ar: "الأورام", link: "#", sLink: "#" },
+            { en: "Thyroid & parathyroid", ar: "الغدة الدرقية", link: "#", sLink: "#" },
+            { en: "Diabetes (DM)", ar: "السكري", link: "#", sLink: "#" },
+            { en: "Bone fractures", ar: "كسور العظام", link: "#", sLink: "#" },
+            { en: "Adrenal disorders", ar: "اضطرابات الغدة الكظرية", link: "#", sLink: "#" },
+            { en: "Renal failure", ar: "الفشل الكلوي", link: "#", sLink: "#" },
+            { en: "Anemia", ar: "الأنيميا", link: "#", sLink: "#" },
+            { en: "Acid base", ar: "حموضة الدم", link: "#", sLink: "#" },
+            { en: "Rheumatoid arthritis", ar: "الروماتويد", link: "#", sLink: "#" }
+        ];
+        const res = {
+            bookTelegram: "https://t.me/nursing2note/110?single", // حطي لينك التليجرام هنا
+            bookDrive: ".حطي اللينك هنا" // حطي لينك الدرايف هنا
+        };
+        renderSmartTabs(modalBody, data, res);
+    }
+
+    function renderResearchContent() {
+        const modalBody = document.getElementById('modalBody');
+        const data = [
+            { en: "Research in nursing", ar: "البحث في التمريض", link: "#", sLink: "#" },
+            { en: "Research problem", ar: "مشكلة البحث", link: "#", sLink: "#" },
+            { en: "Literature review", ar: "مراجعة الدراسات", link: "#", sLink: "#" },
+            { en: "Qualitative and quantitative", ar: "البحث النوعي والكمي", link: "#", sLink: "#" },
+            { en: "Research design", ar: "تصميم البحث", link: "#", sLink: "#" },
+            { en: "Sampling", ar: "العينات", link: "#", sLink: "#" },
+            { en: "Data collection", ar: "جمع البيانات", link: "#", sLink: "#" },
+            { en: "Review", ar: "مراجعة عامة", link: "#", sLink: "#" }
+        ];
+        const res = {
+            bookTelegram: "https://t.me/nursing2note/115?single",
+            bookDrive: "حطي لينك جوجل هنا"
+        };
+        renderSmartTabs(modalBody, data, res);
+    }
+
+    function renderStrategiesContent() {
+        const modalBody = document.getElementById('modalBody');
+        const data = [
+            { en: "Role of nursing educator", ar: "دور معلم التمريض", link: "#", sLink: "#" },
+            { en: "Learning style", ar: "أنماط التعلم", link: "#", sLink: "#" },
+            { en: "Learning theory", ar: "نظريات التعلم", link: "#", sLink: "#" },
+            { en: "Teaching material", ar: "الوسائل التعليمية", link: "#", sLink: "#" },
+            { en: "Teaching strategies", ar: "استراتيجيات التدريس", link: "#", sLink: "#" },
+            { en: "Behavioral Learning objectives", ar: "الأهداف السلوكية", link: "#", sLink: "#" },
+            { en: "Learner evaluation", ar: "تقييم المتعلم", link: "#", sLink: "#" }
+        ];
+        const res = {
+            bookTelegram: "https://t.me/nursing2note/118",
+            bookDrive: "حطي لينك درايف هنا"
+        };
+        renderSmartTabs(modalBody, data, res);
+    }
+
+    function renderInformaticsContent() {
+        const modalBody = document.getElementById('modalBody');
+        const data = [
+            { en: "History", ar: "تاريخ المعلوماتية", link: "#", sLink: "#" },
+            { en: "Concept", ar: "المفاهيم الأساسية", link: "#", sLink: "#" },
+            { en: "Knowledge representation", ar: "تمثيل المعرفة", link: "#", sLink: "#" },
+            { en: "Database management", ar: "إدارة قواعد البيانات", link: "#", sLink: "#" },
+            { en: "Tele nursing", ar: "التمريض عن بُعد", link: "#", sLink: "#" },
+            { en: "Nursing informatics Competency", ar: "كفاءات تمريض المعلوماتية", link: "#", sLink: "#" },
+            { en: "Ai in nursing informatics", ar: "الذكاء الاصطناعي", link: "#", sLink: "#" },
+            { en: "Domains", ar: "مجالات المعلوماتية", link: "#", sLink: "#" },
+            { en: "Electronic medical records", ar: "السجلات الطبية الإلكترونية", link: "#", sLink: "#" }
+        ];
+        const res = {
+            bookTelegram: "https://t.me/nursing2note/116?single",
+            bookDrive: "حطي اللينك هنا"
+        };
+        renderSmartTabs(modalBody, data, res);
+    }
+
+    function renderEmergencyContent() {
+        const modalBody = document.getElementById('modalBody');
+        const data = [
+            { en: "ICU", ar: "العناية المركزة", link: "#", sLink: "#" },
+            { en: "Shock", ar: "الصدمة", link: "#", sLink: "#" },
+            { en: "Respiratory failure", ar: "الفشل التنفسي", link: "#", sLink: "#" },
+            { en: "Cardiac emergency", ar: "طوارئ القلب", link: "#", sLink: "#" },
+            { en: "Neurological care", ar: "العناية بالأعصاب", link: "#", sLink: "#" },
+            { en: "Sepsis", ar: "تسمم الدم", link: "#", sLink: "#" },
+            { en: "Trauma and burns", ar: "الإصابات والحروق", link: "#", sLink: "#" }
+        ];
+        const res = {
+            bookTelegram: "https://t.me/nursing2note/113?single",
+            bookDrive: "حطي لينك درايف هنا"
+        };
+        renderSmartTabs(modalBody, data, res);
+    }
+
+    function renderSurgeryContent() {
+        const modalBody = document.getElementById('modalBody');
+        const data = [
+            { en: "Abscess", ar: "الخراج", link: "#", sLink: "#" },
+            { en: "Wound", ar: "الجروح", link: "#", sLink: "#" },
+            { en: "Thyroid", ar: "الغدة الدرقية", link: "#", sLink: "#" },
+            { en: "Traumatology", ar: "علم الإصابات", link: "#", sLink: "#" },
+            { en: "Hemorrhagic shock", ar: "صدمة نزفية", link: "#", sLink: "#" },
+            { en: "Septic shock", ar: "صدمة تسممية", link: "#", sLink: "#" },
+            { en: "Blood transfusion", ar: "نقل الدم", link: "#", sLink: "#" },
+            { en: "Breast carcinoma 1", ar: "سرطان الثدي 1", link: "#", sLink: "#" },
+            { en: "Breast carcinoma 2", ar: "سرطان الثدي 2", link: "#", sLink: "#" }
+        ];
+        const res = {
+            bookTelegram: "https://t.me/nursing2note/112?single",
+            bookDrive: "حطي هنا"
+        };
+        renderSmartTabs(modalBody, data, res);
+    }
+
+    function renderClinicalAdultContent() {
+        const modalBody = document.getElementById('modalBody');
+        const videos = [
+            { t: "NGT Procedure", l: "https://youtu.be/gPxiFM1UoAU" },
+            { t: "Urinary catheter: Male", l: "https://youtu.be/A7A5C0NaNks" },
+            { t: "Urinary catheter: Female", l: "https://youtu.be/PGyw4CtYOdU" },
+            { t: "Skin traction", l: "https://youtu.be/jJBij-wvDjk" },
+            { t: "Colostomy care", l: "https://youtu.be/DINGwL61KDY" }
+        ];
+        modalBody.innerHTML = `
+            <div class="tabs-nav">
+                <button class="tab-btn active" onclick="switchTab(event, 'check-tab')">التشيك ليست</button>
+                <button class="tab-btn" onclick="switchTab(event, 'quiz-tab-cl')">الأسئلة</button>
+                <button class="tab-btn" onclick="switchTab(event, 'vid-tab')">الفيديوهات</button>
+                <button class="tab-btn" onclick="switchTab(event, 'sum-tab')">التلخيصات</button>
+            </div>
+            <div id="check-tab" class="tab-pane" style="display: block; padding: 10px;">
+                <div class="lecture-item"><span>التشيك ليست (الأساسي) 📋</span> <a href="#" class="btn-link">فتح</a></div>
+                <div class="lecture-item"><span>التشيك ليست (مترجم) 📑</span> <a href="#" class="btn-link">تحميل ✅</a></div>
+            </div>
+            <div id="quiz-tab-cl" class="tab-pane" style="display: none; padding: 10px;">
+                <div class="lecture-item"><div><strong>1. NGT</strong><br><small>تركيب الأنبوبة المعدية</small></div><a href="#" class="btn-link">ابدأ</a></div>
+                <div class="lecture-item"><div><strong>2. Urinary catheter</strong><br><small>قسطرة بولية</small></div><a href="#" class="btn-link">ابدأ</a></div>
+                <div class="lecture-item"><div><strong>3. Skin traction</strong><br><small>الشدة الجلدية</small></div><a href="#" class="btn-link">ابدأ</a></div>
+                <div class="lecture-item"><div><strong>4. Colostomy care</strong><br><small>العناية بفتحة الإخراج</small></div><a href="#" class="btn-link">ابدأ</a></div>
+            </div>
+            <div id="vid-tab" class="tab-pane" style="display: none; padding: 10px;">
+                ${videos.map(v => `<div class="lecture-item"><span>${v.t} 🎥</span> <a href="${v.l}" target="_blank" class="btn-link" style="background:#cc0000;">مشاهدة</a></div>`).join('')}
+            </div>
+            <div id="sum-tab" class="tab-pane" style="display: none; padding: 10px;">
+                <div class="lecture-item"><div><strong>تلخيص NGT</strong></div><a href="#" class="btn-link" style="background:#D4AF37; color:#4D0011;">عرض</a></div>
+                <div class="lecture-item"><div><strong>تلخيص Catheter</strong></div><a href="#" class="btn-link" style="background:#D4AF37; color:#4D0011;">عرض</a></div>
+                <div class="lecture-item"><div><strong>تلخيص Traction</strong></div><a href="#" class="btn-link" style="background:#D4AF37; color:#4D0011;">عرض</a></div>
+                <div class="lecture-item"><div><strong>تلخيص Colostomy</strong></div><a href="#" class="btn-link" style="background:#D4AF37; color:#4D0011;">عرض</a></div>
+            </div>
+        `;
+    }
+
+    // دوال التحكم في المودال (النافذة)
+    function openModal(title) {
+        document.getElementById('modalTitle').innerText = title;
+        if (title === 'Clinical Adult 2') renderClinicalAdultContent();
+        else if (title === 'Adult 2 نظري') renderAdultContent();
+        else if (title === 'Research in nursing') renderResearchContent();
+        else if (title === 'Strategies') renderStrategiesContent();
+        else if (title === 'Informatics') renderInformaticsContent();
+        else if (title === 'Surgical diseases' || title === 'Surgical') renderSurgeryContent();
+        else if (title === 'Critical Care') renderEmergencyContent();
+        
+        document.getElementById('materialModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        document.getElementById('materialModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    function switchTab(evt, tabId) {
+        let panes = document.getElementsByClassName("tab-pane");
+        for (let pane of panes) pane.style.display = "none";
+        let buttons = evt.currentTarget.parentElement.getElementsByClassName("tab-btn");
+        for (let btn of buttons) btn.classList.remove("active");
+        document.getElementById(tabId).style.display = "block";
+        evt.currentTarget.classList.add("active");
+    }
+
+    // مصفوفات الأذكار والأحاديث (كما هي تماماً)
+    const spiritualMessages = [
+        "🕊 اللهم إني أسألك لذة النظر إلى وجهك الكريم والشوق إلى لقائك",
+        "🕊 اللهم صلِّ وسلم وبارك على نبينا محمد",
+        "🕊 اللهم إني أسألك الفردوس الأعلى من الجنة بغير حساب",
+        "🕊 سُبحان الله وبحمده، سُبحان الله العظيم",
+        "🕊 اللهم إني أسألك إيماناً لا يرتد ونعيماً لا ينفد ومرافقة نبيك محمد",
+        "🕊 لا إله إلا الله وحده لا شريك له",
+        "🕊 اللهم اجعل قبري روضة من رياض الجنة",
+        "🕊 الحمد لله حمداً كثيراً طيباً مباركاً فيه",
+        "🕊 اللهم إني أسألك الجنة وما قرب إليها من قول أو عمل",
+        "🕊 الله أكبر كبيراً والحمد لله كثيراً",
+        "🕊 اللهم إني أسألك برد العيش بعد الموت ولذة النظر إلى وجهك",
+        "🕊 لا حول ولا قوة إلا بالله العلي العظيم",
+        "🕊 اللهم أنت ربي لا إله إلا أنت، خلقتني وأنا عبدك (سيد الاستغفار)",
+        "🕊 اللهم صلِّ على محمد وعلى آل محمد",
+        "🕊 لا إله إلا أنت سبحانك إني كنت من الظالمين",
+        "🕊 أستغفر الله العظيم وأتوب إليه",
+        "🕊 اللهم إنك عفو كريم تحب العفو فاعفُ عني",
+        "🕊 سُبحان الله وبحمده عدد خلقه ورضا نفسه",
+        "🕊 ربِّ اغفر لي ولوالدي وللمؤمنين والمؤمنات",
+        "🕊 اللهم صلِّ وسلم على نبينا محمد",
+        "🕊 اللهم اغفر لي ذنبي كله، دقه وجله، وأوله وآخره",
+        "🕊 سُبحان الله، والحمد لله، ولا إله إلا الله، والله أكبر",
+        "🕊 ربنا ظلمنا أنفسنا وإن لم تغفر لنا وترحمنا لنكونن من الخاسرين",
+        "🕊 أستغفر الله العظيم الذي لا إله إلا هو الحي القيوم",
+        "🕊 يا حي يا قيوم برحمتك أستغيث، أصلح لي شأني كله",
+        "🕊 اللهم صلِّ على نبينا محمد",
+        "🕊 يا مقلب القلوب ثبت قلبي على دينك",
+        "🕊 لا إله إلا الله العظيم الحليم",
+        "🕊 اللهم إني أسألك الهدى والتقى والعفاف والغنى",
+        "🕊 سُبحان الله وبحمده زنة عرشه ومداد كلماته",
+        "🕊 ربِّ اشرح لي صدري ويسر لي أمري",
+        "🕊 اللهم صلِّ وسلم وبارك على نبينا محمد",
+        "🕊 اللهم آتِ نفسي تقواها، وزكها أنت خير من زكاها",
+        "🕊 أستغفر الله واتوب إليه",
+        "🕊 اللهم اكفني بحلالك عن حرامك وأغنني بفضلك عمن سواك",
+        "🕊 الحمد لله على كل حال",
+        "🕊 بسم الله الذي لا يضر مع اسمه شيء في الأرض ولا في السماء",
+        "🕊 اللهم صلِّ على نبينا محمد",
+        "🕊 أعوذ بكلمات الله التامات من شر ما خلق",
+        "🕊 سُبحان الله وبحمده",
+        "🕊 حسبي الله لا إله إلا هو عليه توكلت وهو رب العرش العظيم",
+        "🕊 لا إله إلا الله وحده لا شريك له",
+        "🕊 اللهم إني أعوذ بك من الهم والحزن، والعجز والكسل",
+        "🕊 اللهم صلِّ وسلم وبارك على نبينا محمد",
+        "🕊 اللهم احفظني من بين يديَّ ومن خلفي وعن يميني شمالي",
+        "🕊 الحمد لله رب العالمين",
+        "🕊 اللهم إني أسألك العفو والعافية في الدنيا والآخرة",
+        "🕊 أستغفر الله العظيم"
+    ];
+
+    const hadithMessages = [
+        "📖 قال ﷺ: إنما الأعمال بالنيات، وإنما لكل امرئ ما نوى.",
+        "📖 قال ﷺ: من سلك طريقاً يلتمس فيه علماً سهل الله له به طريقاً إلى الجنة.",
+        "📖 قال ﷺ: من كان يؤمن بالله واليوم الآخر فليقل خيراً أو ليصمت.",
+        "📖 قال ﷺ: لا يؤمن أحدكم حتى يحب لأخيه ما يحب لنفسه.",
+        "📖 قال ﷺ: الدِّينُ النَّصِيحَةُ.",
+        "📖 قال ﷺ: احفظ الله يحفظك، احفظ الله تجده تجاهك.",
+        "📖 قال ﷺ: إذا سألت فاسأل الله، وإذا استعنت فاستعن بالله.",
+        "📖 قال ﷺ: إن الله طيب لا يقبل إلا طيباً.",
+        "📖 قال ﷺ: لا يرحم الله من لا يرحم الناس.",
+        "📖 قال ﷺ: المسلم من سلم المسلمون من لسانه ويده.",
+        "📖 قال ﷺ: الكلمة الطيبة صدقة.",
+        "📖 قال ﷺ: تبسمك في وجه أخيك لك صدقة.",
+        "📖 قال ﷺ: البر حسن الخلق، والإثم ما حاك في نفسك.",
+        "📖 قال ﷺ: من غشنا فليس منا.",
+        "📖 قال ﷺ: اتق الله حيثما كنت، وأتبع السيئة الحسنة تمحها.",
+        "📖 قال ﷺ: ليس الغنى عن كثرة العَرَض، ولكن الغنى غنى النفس.",
+        "📖 قال ﷺ: خيركم من تعلم القرآن وعلمه.",
+        "📖 قال ﷺ: يسّروا ولا تعسّروا، وبشّروا ولا تنفّروا.",
+        "📖 قال ﷺ: الدال على الخير كفاعله.",
+        "📖 قال ﷺ: الطهور شطر الإيمان.",
+        "📖 قال ﷺ: الحمد لله تملأ الميزان.",
+        "📖 قال ﷺ: من يرد الله به خيراً يفقهه في الدين.",
+        "📖 قال ﷺ: إن الله جميل يحب الجمال.",
+        "📖 قال ﷺ: الحياء لا يأتي إلا بخير.",
+        "📖 قال ﷺ: أحب الأعمال إلى الله أدومها وإن قل.",
+        "📖 قال ﷺ: المؤمن للمؤمن كالبنيان يشد بعضه بعضاً.",
+        "📖 قال ﷺ: تهادوا تحابوا.",
+        "📖 قال ﷺ: الساعي على الأرملة والمسكين كالمجاهد في سبيل الله.",
+        "📖 قال ﷺ: ما زال جبريل يوصيني بالجار حتى ظننت أنه سيورثه.",
+        "📖 قال ﷺ: كلمتان خفيفتان على اللسان ثقيلتان في الميزان: سبحان الله وبحمده سبحان الله العظيم.",
+        "📖 قال ﷺ: الظلم ظلمات يوم القيامة.",
+        "📖 قال ﷺ: واعلم أن النصر مع الصبر، وأن الفرج مع الكرب.",
+        "📖 قال ﷺ: الصلاة نور، والصدقة برهان، الصبر ضياء.",
+        "📖 قال ﷺ: كل أمتي معافى إلا المجاهرين.",
+        "📖 قال ﷺ: لا يدخل الجنة من كان في قلبه مثقال ذرة من كبر.",
+        "📖 قال ﷺ: اليد العليا خير من اليد السفلى.",
+        "📖 قال ﷺ: من لا يرحم لا يُرحم.",
+        "📖 قال ﷺ: استوصوا بالنساء خيراً.",
+        "📖 قال ﷺ: الصيام جنة (أي وقاية).",
+        "📖 قال ﷺ: من صام رمضان إيماناً واحتساباً غفر له ما تقدم من ذنبه.",
+        "📖 قال ﷺ: بني الإسلام على خمس: شهادة أن لا إله إلا الله، وإقام الصلاة..",
+        "📖 قال ﷺ: دع ما يريبك إلى ما لا يريبك.",
+        "📖 قال ﷺ: من حسن إسلام المرء تركه ما لا يعنيه.",
+        "📖 قال ﷺ: لا تباغضوا، ولا تحاسدوا، ولا تدابروا.",
+        "📖 قال ﷺ: كن في الدنيا كأنك غريب أو عابر سبيل.",
+        "📖 قال ﷺ: كل مسكر حرام.",
+        "📖 قال ﷺ: إن الله كتب الإحسان على كل شيء.",
+        "📖 قال ﷺ: من غدا إلى المسجد أو راح، أعد الله له نزلاً في الجنة.",
+        "📖 قال ﷺ: صلة الرحم تزيد في العمر.",
+        "📖 قال ﷺ: اتقوا النار ولو بشق تمرة.",
+        "📖 قال ﷺ: إذا مات ابن آدم انقطع عمله إلا من ثلاث: صدقة جارية، أو علم ينتفع به أو ولد صالح يدعو له.",
+        "📖 قال ﷺ: خيركم خيركم لأهله.",
+        "📖 قال ﷺ: لا يدخل الجنة قاطع رحم.",
+        "📖 قال ﷺ: من أحب أن يبسط له في رزقه فليصل رحمه.",
+        "📖 قال ﷺ: التائب من الذنب كمن لا ذنب له.",
+        "📖 قال ﷺ: إن الله يحب إذا عمل أحدكم عملاً أن يتقنه.",
+        "📖 قال ﷺ: مَن صلَّى عليَّ واحدةً صلَّى اللهُ عليه بها عشرًا.",
+        "📖 قال ﷺ: أفضل الذكر لا إله إلا الله، وأفضل الدعاء الحمد لله.",
+        "📖 قال ﷺ: لا يلدغ المؤمن من جحر واحد مرتين.",
+        "📖 قال ﷺ: اعبد الله كأنك تراه، فإن لم تكن تراه فإنه يراك.",
+        "📖 قال ﷺ: حق المسلم على المسلم ست: إذا لقيته فسلم عليه..",
+        "📖 قال ﷺ: اقرؤوا القرآن فإنه يأتي يوم القيامة شفيعاً لأصحابه.",
+        "📖 قال ﷺ: الصدق يهدي إلى البر، والبر يهدي إلى الجنة.",
+        "📖 قال ﷺ: إياكم والكذب، فإن الكذب يهدي إلى الفجور.",
+        "📖 قال ﷺ: ما ملأ آدمي وعاءً شراً من بطنه.",
+        "📖 قال ﷺ: عينان لا تمسهما النار: عين بكت من خشية الله، وعين باتت تحرس في سبيل الله.",
+        "📖 قال ﷺ: سيد الاستغفار أن تقول: اللهم أنت ربي لا إله إلا أنت..",
+        "📖 قال ﷺ: لو أنكم توكلون على الله حق توكله لرزقكم كما يرزق الطير.",
+        "📖 قال ﷺ: من قرأ آيتين من آخر سورة البقرة في ليلة كفتاه.",
+        "📖 قال ﷺ: سبحان الله وبحمده مائة مرة حطت خطاياه وإن كانت مثل زبد البحر.",
+        "📖 قال ﷺ: أنا وكافل اليتيم في الجنة هكذا (وأشار بالسبابة والوسطى).",
+        "📖 قال ﷺ: اجعلوا آخر صلاتكم بالليل وتراً.",
+        "📖 قال ﷺ: سباب المسلم فسوق وقتاله كفر.",
+        "📖 قال ﷺ: لولا أن أشق على أمتي لأمرتهم بالسواك عند كل صلاة.",
+        "📖 قال ﷺ: كفى بالمرء كذباً أن يحدث بكل ما سمع."
+    ];
+
+    function showRandomPray() {
+        const bubble = document.getElementById('prayBubble');
+        const randomIndex = Math.floor(Math.random() * spiritualMessages.length);
+        bubble.innerHTML = `<div style="text-align: right;"><span onclick="this.parentElement.parentElement.style.display='none'" style="cursor:pointer; color:red; font-weight:bold; font-size:18px;"> ✖ </span></div><div style="margin-top:10px;">${spiritualMessages[randomIndex]}</div>`;
+        bubble.style.display = 'block';
+    }
+
+    function showRandomHadith() {
+        const bubble = document.getElementById('hadithBubble');
+        const randomIndex = Math.floor(Math.random() * hadithMessages.length);
+        bubble.innerHTML = `<div style="text-align: right;"><span onclick="this.parentElement.parentElement.style.display='none'" style="cursor:pointer; color:red; font-weight:bold; font-size:20px; padding:5px;"> ✖ </span></div><div style="margin-top:10px; direction:rtl;">${hadithMessages[randomIndex]}</div>`;
+        bubble.style.display = 'block';
+    }
+</script>
+
+<div class="pray-fab" onclick="showRandomPray()"><i class="fas fa-hand-holding-heart"></i> <span>أذكار</span></div>
+<div class="pray-bubble" id="prayBubble"></div>
+<div class="hadith-fab" onclick="showRandomHadith()"><i class="fas fa-book-open"></i> <span>أحاديث</span></div>
+<div class="hadith-bubble" id="hadithBubble"></div>
+
+</body>
+</html>
